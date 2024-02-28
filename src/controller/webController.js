@@ -48,9 +48,6 @@ class WebController {
     return new Promise((resolve) => {
       purchaseButton.addEventListener("click", (event) => {
         purchaseClickHandler(event, resolve);
-
-        WebView.showAfterPurchases();
-        WebView.showPurchaseAmount(purchaseAmountInput.value);
       });
     });
   }
@@ -61,6 +58,8 @@ class WebController {
       return [...acc, numbers];
     }, []);
 
+    WebView.showAfterPurchases();
+    WebView.showPurchaseAmount(purchaseAmountInput.value);
     WebView.showLottoList(lottoNumberList);
   }
 
@@ -85,8 +84,6 @@ class WebController {
   #getGameResult(lottoList, winningLotto) {
     const result = new LottoResult(lottoList, winningLotto);
     const { rank, profit } = result.getResult();
-
-    console.log(rank);
 
     WebView.showGameResult(rank);
     WebView.showProfit(profit);
