@@ -1,14 +1,23 @@
 import { OPTION } from "../constants/option.js";
 import LottoMachine from "../domain/LottoMachine.js";
+import LottoResult from "../domain/LottoResult.js";
 import WinningLotto from "../domain/WinningLotto.js";
 import bonusNumberValidator from "../validator/BonusNumberValidator.js";
+import WebView from "../view/webView.js";
 
-const winningNumbers = document.querySelectorAll(".input_winningNumber");
-const bonusNumber = document.getElementById("input_bonusNumber");
+const winningNumbers = document.querySelectorAll(
+  ".winning-lotto__input-number",
+);
+const bonusNumber = document.getElementsByClassName(
+  "winning-lotto__input-bonus-number",
+)[0];
 
-const invalidWinningLotto = document.getElementById("invalid_winningLotto");
+const invalidWinningLotto = document.getElementsByClassName(
+  "winning-lotto__invalid",
+)[0];
 
-const dialog = document.getElementById("result_dialog");
+// const dialog = document.getElementsByClassName("result_dialog")[0];
+const dialog = document.querySelector(".result-dialog");
 
 const winningLottoHandler = {
   convertInputToNumber() {
@@ -34,21 +43,31 @@ const winningLottoHandler = {
   },
 
   validateWinningLotto() {
-    const winningLotto = this.makeWinningLotto();
-    bonusNumberValidator(winningLotto.getNumbers(), Number(bonusNumber.value));
-    invalidWinningLotto.innerText = "";
+    const makedLotto = this.makeWinningLotto();
+    bonusNumberValidator(makedLotto.getNumbers(), Number(bonusNumber.value));
+    invalidWinningLotto.textContent = "";
 
+    const winningLotto = WinningLotto(makedLotto, Number(bonusNumber.value));
     return winningLotto;
   },
 
-  onClickHandler(event, resolve) {
+  showModal(lottoList, winningLotto) {
+    const result = new LottoResult(lottoList, winningLotto);
+    const { rank, profit } = result.getResult();
+
+    // dialog.showModal();
+    dialog.showModal();
+    WebView.showGameResult(rank);
+    WebView.showProfit(profit);
+  },
+
+  onClickGameResult(event, lottoList) {
     event.preventDefault();
     try {
       const winningLotto = this.validateWinningLotto();
-      resolve(WinningLotto(winningLotto, Number(bonusNumber.value)));
-      dialog.showModal();
+      this.showModal(lottoList, winningLotto);
     } catch (error) {
-      invalidWinningLotto.innerText = error.message;
+      invalidWinningLotto.textContent = error.message;
     }
   },
 };

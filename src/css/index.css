@@ -6,7 +6,7 @@
   height: 100vh;
 }
 
-header {
+.header {
   background-color: var(--lotto-primary-color);
   color: var(--greyscale-1-color);
   width: 100%;
@@ -17,10 +17,8 @@ header {
   top: 0;
 }
 
-header div {
+.header__title {
   margin-left: 150px;
-  font-size: var(--title-text-size);
-  font-weight: var(--title-font-weight);
 }
 
 body {
@@ -34,7 +32,7 @@ button {
   font-weight: var(--button-font-weight);
 }
 
-#container {
+.main {
   border: solid 1px var(--border-color);
   border-radius: var(--border-radius);
   width: 414px;
@@ -46,8 +44,6 @@ button {
 }
 
 .title {
-  font-size: var(--title-text-size);
-  font-weight: var(--title-font-weight);
   margin: 20px;
   display: flex;
   justify-content: center;
